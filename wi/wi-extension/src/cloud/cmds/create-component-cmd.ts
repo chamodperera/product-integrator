@@ -515,11 +515,14 @@ async function handleMCPProxyRepositoryAttach(
 ): Promise<WICloudSubmitComponentsResp> {
 	const result: WICloudSubmitComponentsResp = { created: [], failed: [], total: 1 };
 	try {
+		if (!ext.clients.rpcClient) {
+			throw new Error("RPC client is not initialized");
+		}
 		const apiVersion = component.apiVersions?.[0]?.apiVersion ?? "v1.0";
 		await window.withProgress(
 			{ title: "Attaching MCP proxy repository...", location: ProgressLocation.Notification },
 			() =>
-				ext.clients.rpcClient?.attachMCPProxyRepository({
+				ext.clients.rpcClient.attachMCPProxyRepository({
 					componentId: workspaceCompId,
 					isPublicRepo: false,
 					orgHandler: org.handle,
