@@ -31,6 +31,7 @@ export interface WICloudFormContext {
 	isNewCodeServerComp: boolean;
 	buildPackLang: "ballerina" | "microintegrator";
 	integrations: ICreateNewIntegrationCmdIntegrations[];
+	isMCPProxyFromExistingAPI?: boolean;
 }
 
 /**

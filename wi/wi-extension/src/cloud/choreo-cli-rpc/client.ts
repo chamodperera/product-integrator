@@ -21,6 +21,7 @@ import type {
 	BuildPackReq,
 	Buildpack,
 	CancelApprovalReq,
+	AttachMCPProxyRepositoryReq,
 	ChangePrebuiltIntegrationRepositoryReq,
 	CheckWorkflowStatusReq,
 	CheckWorkflowStatusResp,
@@ -745,6 +746,13 @@ export class ChoreoRPCClient implements IChoreoRPCClient {
 			throw new Error("RPC client is not initialized");
 		}
 		await this.client.sendRequest("component/changePrebuiltIntegrationRepository", params);
+	}
+
+	async attachMCPProxyRepository(params: AttachMCPProxyRepositoryReq): Promise<void> {
+		if (!this.client) {
+			throw new Error("RPC client is not initialized");
+		}
+		await this.client.sendRequest("component/attachMCPProxyRepository", params);
 	}
 
 	async getComponentUsage(params: GetComponentUsageReq): Promise<GetComponentUsageResp> {
