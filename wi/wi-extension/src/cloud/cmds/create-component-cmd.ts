@@ -21,7 +21,6 @@ import * as path from "path";
 import {
 	WICommandIds,
 	DevantScopes,
-	ChoreoComponentSubType,
 	getComponentKindRepoSource,
 	parseGitURL,
 	GitProvider,
@@ -224,7 +223,7 @@ export function createNewComponentCommand(context: ExtensionContext) {
 						const isMCPProxyFromExistingAPI = workspaceCompId
 							? dataCacheStore.getState().getComponents(selectedOrg.handle, selectedProject.handler)
 								?.find(c => c.metadata?.id === workspaceCompId)
-								?.spec?.subType === ChoreoComponentSubType.MCPProxyFromExistingAPI
+								?.spec?.subType === "MCPProxyFromExistingAPI"
 							: false;
 
 						openCloudFormWebview({
@@ -248,7 +247,7 @@ export function createNewComponentCommand(context: ExtensionContext) {
 	);
 }
 
-export const submitCreateComponentHandler = async ({ createParams, org, project, workspaceFsPath }: WICloudSubmitComponentsReq): Promise<WICloudSubmitComponentsResp> => {
+export const submitCreateComponentHandler = async ({ createParams, org, project, workspaceFsPath, deployToNewTrack }: WICloudSubmitComponentsReq): Promise<WICloudSubmitComponentsResp> => {
 	const totalCount = createParams.length;
 	const result: WICloudSubmitComponentsResp = {
 		created: [],
@@ -268,8 +267,8 @@ export const submitCreateComponentHandler = async ({ createParams, org, project,
 			// if its pre-built integration, we need to update the existing component with new repo details instead of creating a new component.
 			return await handlePrebuiltComponentUpdate(workspaceCompId, component, org, project, createParams[0], workspaceFsPath, gitRoot!);
 		}
-		if (component?.spec?.subType === ChoreoComponentSubType.MCPProxyFromExistingAPI) {
-			return await handleMCPProxyRepositoryAttach(workspaceCompId, component, org, project, createParams[0], workspaceFsPath, gitRoot!);
+		if (component?.spec?.subType === "MCPProxyFromExistingAPI") {
+			return await handleMCPProxyRepositoryAttach(workspaceCompId, component, org, project, createParams[0], workspaceFsPath, gitRoot!, deployToNewTrack ?? false);
 		}
 	}
 
@@ -512,6 +511,7 @@ async function handleMCPProxyRepositoryAttach(
 	createParam: WICloudSubmitComponentsReq['createParams'][number],
 	workspaceFsPath: string,
 	gitRoot: string,
+	deployToNewTrack: boolean,
 ): Promise<WICloudSubmitComponentsResp> {
 	const result: WICloudSubmitComponentsResp = { created: [], failed: [], total: 1 };
 	try {
@@ -532,7 +532,7 @@ async function handleMCPProxyRepositoryAttach(
 					repositorySubPath: relativePath(workspaceFsPath, createParam.componentDir),
 					repositoryBranch: createParam.branch,
 					secretRef: createParam.gitCredRef,
-					deployToNewTrack: createParam.deployToNewTrack ?? false,
+					deployToNewTrack,
 					apiVersion,
 				}),
 		);

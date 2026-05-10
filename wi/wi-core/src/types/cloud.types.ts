@@ -43,6 +43,21 @@ export interface WICloudSubmitComponentsReq {
 	project: Project;
 	workspaceFsPath: string;
 	createParams: CreateComponentReq[];
+	deployToNewTrack?: boolean;
+}
+
+export interface AttachMCPProxyRepositoryReq {
+	orgId: string;
+	orgHandler: string;
+	projectId: string;
+	componentId: string;
+	srcGitRepoUrl: string;
+	repositorySubPath: string;
+	repositoryBranch: string;
+	secretRef: string;
+	isPublicRepo: boolean;
+	deployToNewTrack: boolean;
+	apiVersion?: string;
 }
 
 export interface WICloudSubmitComponentsResp {

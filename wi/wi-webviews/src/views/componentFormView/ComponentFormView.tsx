@@ -265,9 +265,9 @@ function ComponentForm() {
 							orgId: params!.org.id?.toString(),
 							orgUUID: params!.org.uuid,
 							originCloud: "devant",
-							...(isMCPProxyFromExistingAPI ? { deployToNewTrack } : {}),
 						} as CreateComponentReq;
 					}),
+				...(isMCPProxyFromExistingAPI ? { deployToNewTrack } : {}),
 			};
 
 			const created = await wsClient.submitComponents(req);

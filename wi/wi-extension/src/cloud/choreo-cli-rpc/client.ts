@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import type { AttachMCPProxyRepositoryReq } from "@wso2/wi-core";
 import type {
 	BuildKind,
 	BuildPackReq,
 	Buildpack,
 	CancelApprovalReq,
-	AttachMCPProxyRepositoryReq,
 	ChangePrebuiltIntegrationRepositoryReq,
 	CheckWorkflowStatusReq,
 	CheckWorkflowStatusResp,

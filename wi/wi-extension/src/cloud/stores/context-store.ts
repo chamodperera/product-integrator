@@ -20,7 +20,6 @@ import { existsSync, readFileSync, rmSync } from "fs";
 import * as path from "path";
 import {
     type ComponentKind,
-    ChoreoComponentSubType,
     type ContextItem,
     type ContextItemDir,
     type ContextItemEnriched,
@@ -384,7 +383,7 @@ const mapComponentList = async (components: ComponentKind[], selected?: ContextI
                                     rmSync(path.join(gitRoot, ".git"), { recursive: true, force: true });
                                     continue;
                                 }
-                                if (componentItem.spec?.subType === ChoreoComponentSubType.MCPProxyFromExistingAPI) {
+                                if (componentItem.spec?.subType === "MCPProxyFromExistingAPI") {
                                     // mark the component so that deploy routes to attachMCPProxyRepository instead of createComponent
                                     ext.context.workspaceState.update("SOURCE_COMPONENT_ID", componentItem?.metadata?.id);
                                 }
